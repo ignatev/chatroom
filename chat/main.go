@@ -1,4 +1,4 @@
-package chat
+package main
 
 import (
 	"net/http"
@@ -7,7 +7,7 @@ import (
 	"html/template"
 	"path/filepath"
 	"flag"
-)
+		)
 
 type templateHandler struct {
 	once		sync.Once
