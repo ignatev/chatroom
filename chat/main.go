@@ -1,28 +1,28 @@
 package main
 
 import (
-	"net/http"
-	"log"
-	"sync"
-	"html/template"
-	"path/filepath"
 	"flag"
-	"github.com/stretchr/gomniauth/providers/github"
 	"github.com/stretchr/gomniauth"
+	"github.com/stretchr/gomniauth/providers/github"
 	"github.com/stretchr/objx"
+	"html/template"
+	"log"
+	"net/http"
+	"path/filepath"
+	"sync"
 )
 
 type templateHandler struct {
-	once		sync.Once
-	filename	string
-	templ		*template.Template
+	once     sync.Once
+	filename string
+	templ    *template.Template
 }
 
 func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	t.once.Do(func() {
 		t.templ = template.Must(template.ParseFiles(filepath.Join("templates", t.filename)))
 	})
-	data := map[string]interface{} {
+	data := map[string]interface{}{
 		"Host": r.Host,
 	}
 	if authCookie, err := r.Cookie("auth"); err == nil {

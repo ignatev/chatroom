@@ -1,28 +1,28 @@
 package main
 
 import (
-	"net/http"
-	"log"
 	"github.com/gorilla/websocket"
 	"github.com/ignatev/chatroom/trace"
 	"github.com/stretchr/objx"
-	)
+	"log"
+	"net/http"
+)
 
 type room struct {
 	forward chan *message
-	join chan *client
-	leave chan *client
+	join    chan *client
+	leave   chan *client
 	clients map[*client]bool
-	tracer trace.Tracer
+	tracer  trace.Tracer
 }
 
 func newRoom() *room {
 	return &room{
 		forward: make(chan *message),
-		join: make(chan *client),
-		leave: make(chan *client),
+		join:    make(chan *client),
+		leave:   make(chan *client),
 		clients: make(map[*client]bool),
-		tracer: trace.Off(),
+		tracer:  trace.Off(),
 	}
 }
 
@@ -47,7 +47,7 @@ func (r *room) run() {
 }
 
 const (
-	socketBufferSize = 1024
+	socketBufferSize  = 1024
 	messageBufferSize = 256
 )
 
@@ -65,9 +65,9 @@ func (r *room) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 	client := &client{
-		socket: socket,
-		send: make(chan *message, messageBufferSize),
-		room: r,
+		socket:   socket,
+		send:     make(chan *message, messageBufferSize),
+		room:     r,
 		userData: objx.MustFromBase64(authCookie.Value),
 	}
 	r.join <- client
@@ -75,4 +75,3 @@ func (r *room) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	go client.write()
 	client.read()
 }
-

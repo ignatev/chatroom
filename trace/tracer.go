@@ -1,8 +1,8 @@
 package trace
 
 import (
-	"io"
 	"fmt"
+	"io"
 )
 
 type tracer struct {
@@ -22,7 +22,7 @@ func New(w io.Writer) Tracer {
 	return &tracer{out: w}
 }
 
-type nilTracer struct {}
+type nilTracer struct{}
 
 func (t *nilTracer) Trace(a ...interface{}) {}
 
