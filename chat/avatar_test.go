@@ -19,3 +19,16 @@ func TestAuthAvatar(t *testing.T){
 		t.Error("AuthAvatar.GetAvatarURL should return correct url")
 	}
 }
+
+func TestGravatarAvatar(t *testing.T) {
+	var gravatarAvatar GravatarAvatar
+	client := new(client)
+	client.userData = map[string]interface{}{"email": "MyEmailAddress@example.com"}
+	url, err := gravatarAvatar.GetAvatarURL(client)
+	if err != nil {
+		t.Error("GravatarAvatar.GetAvatarRUL should not return an error")
+	}
+	if url != "//www.gravatar.com/avatar/0bc83cb571cd1c50ba6f4e8a78ef136" {
+		t.Errorf("GravatarAvatar.GetAvatarURL wrongly returned %s", url)
+	}
+}
