@@ -1,6 +1,10 @@
 package main
 
-import "errors"
+import (
+	"errors"
+	"crypto/md5"
+	"io"
+)
 
 // ErrNoAvatarURL is the error that is returned when the
 // Avatar instance is unable to provide an avatar URL.
@@ -22,4 +26,16 @@ func (AuthAvatar) GetAvatarURL(c *client) (string, error) {
 		}
 	}
 	return "", ErrNoAvatarURL
+}
+
+type GravatarAvatar struct{}
+
+var UseGravatar GravatarAvatar
+func(GravatarAvatar) GetAvatarURL(c *client) (string, error) {
+	if email, ok := c.userData["email"]; ok {
+		if emailStr, ok := email.(string); ok {
+			m := md5.New()
+			io.WriteString(m, strings.ToLower)
+		}
+	}
 }
