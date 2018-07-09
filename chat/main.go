@@ -38,7 +38,7 @@ func main() {
 	)
 	var addr = flag.String("addr", ":8080", "The address of the application ")
 	flag.Parse()
-	r := newRoom(UseAuthAvatar)
+	r := newRoom(UseGravatar)
 	http.Handle("/chat", mustAuth(&templateHandler{filename: "chat.html"}))
 	http.Handle("/login", &templateHandler{filename: "login.html"})
 	http.HandleFunc("/auth/", loginHandler)
