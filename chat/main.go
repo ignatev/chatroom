@@ -12,6 +12,13 @@ import (
 	"sync"
 )
 
+//set the active Avatar implementation
+var avatars Avatar = TryAvatars{
+	UseFileSystemAvatar,
+	UseAuthAvatar,
+	UseGravatar,
+}
+
 type templateHandler struct {
 	once     sync.Once
 	filename string
@@ -38,7 +45,7 @@ func main() {
 	)
 	var addr = flag.String("addr", ":8080", "The address of the application ")
 	flag.Parse()
-	r := newRoom(UseFileSystemAvatar)
+	r := newRoom()
 	http.Handle("/avatars/",
 		http.StripPrefix("/avatars/",
 			http.FileServer(http.Dir("./avatars"))))
