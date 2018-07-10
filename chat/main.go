@@ -38,7 +38,10 @@ func main() {
 	)
 	var addr = flag.String("addr", ":8080", "The address of the application ")
 	flag.Parse()
-	r := newRoom(UseGravatar)
+	r := newRoom(UseFileSystemAvatar)
+	http.Handle("/avatars/",
+		http.StripPrefix("/avatars/",
+			http.FileServer(http.Dir("./avatars"))))
 	http.Handle("/chat", mustAuth(&templateHandler{filename: "chat.html"}))
 	http.Handle("/login", &templateHandler{filename: "login.html"})
 	http.Handle("/upload", &templateHandler{filename: "upload.html"})
@@ -60,4 +63,6 @@ func main() {
 	if err := http.ListenAndServe(*addr, nil); err != nil {
 		log.Fatal("listenAndServer:", err)
 	}
+
+
 }
